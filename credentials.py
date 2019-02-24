@@ -1,2 +1,2 @@
-userid="CCO_Username"
-passwd="CCO_password"
+userid = "CCO_Username"
+passwd = "CCO_password"

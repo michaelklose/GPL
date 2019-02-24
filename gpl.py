@@ -6,23 +6,28 @@ import csv
 import os
 import credentials as creds
 
-version = 3.4
+version = 3.5
 
 '''
 The credentials stored in credentials.py are in the same directory
 where this file is located.
 '''
 
+# Pricelist US
+# pricelist = "1109"
+
+# Pricelist EMEA
+pricelist = "1110"
 
 base = os.path.expanduser("~/Cisco")
-glus = os.path.expanduser("~/Cisco/glus.txt")
+gpl = os.path.expanduser("~/Cisco/gpl.txt")
 price = os.path.expanduser("~/Cisco/price.txt")
 
 
 class web():
     url = 'https://prpub.cloudapps.cisco.com/lpc/'
-    payload = 'priceList=1109&format=Ascii+Flat+File&typeSelected=PAS' +\
-        '&commaSeparateInputsForUsageMatrix=' + \
+    payload = 'priceList=' + pricelist + '&format=Ascii+Flat+File&' +\
+        'typeSelected=PAS&commaSeparateInputsForUsageMatrix=' + \
         creds.userid + '%2C3%2C1-tier%2C'
     headers = {
         'Origin': "https://prpub.cloudapps.cisco.com",
@@ -46,7 +51,7 @@ def get_file():
     print("Downloading the file")
     thatfile = s.post(web.url + 'servlet/DownloadEntirePL',
                       headers=web.headers, data=web.payload)
-    with open(glus, 'wb') as file:
+    with open(gpl, 'wb') as file:
         file.write(thatfile.content)
         file.close()
 
@@ -54,7 +59,7 @@ def get_file():
 def manipulate():
     print("Grooming the File")
     dest = open(price, "wt")
-    with open(glus, 'rt',)as groom:
+    with open(gpl, 'rt',)as groom:
         reader = csv.reader(groom, delimiter="|")
         writer = csv.writer(dest, delimiter="|")
 
